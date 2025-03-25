@@ -1,5 +1,8 @@
 from django.shortcuts import render
 from profiles.models import Profile
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def profiles_index(request):
@@ -28,6 +31,7 @@ def profile(request, username):
     Returns:
         HttpResponse: Rendered HTML response displaying the details of the specified user profile.
     """
+    logger.info("Consultation du profil : %s (IP: %s)", username, request.META.get('REMOTE_ADDR'))
     profile = Profile.objects.get(user__username=username)
     context = {'profile': profile}
     return render(request, 'profiles/profile.html', context)

@@ -11,7 +11,8 @@ urlpatterns = [
     path('lettings/', include('letting.urls', namespace="letting")),
     path('profiles/', include('profiles.urls', namespace="profiles")),
     path('admin/', admin.site.urls),
-    path('trigger-error/', views.trigger_error),
+    path("debug-sentry/", views.test_error),
+
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 handler404 = 'oc_lettings_site.views.custom_404'

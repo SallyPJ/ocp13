@@ -1,5 +1,8 @@
 from django.shortcuts import render
 from .models import Letting
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def lettings_index(request):
@@ -28,6 +31,8 @@ def letting(request, letting_id):
     Returns:
         HttpResponse: Rendered HTML response displaying the details of the specified letting.
     """
+    logger.info("Consultation de la page Letting avec ID=%s (IP: %s)", letting_id, request.META.get('REMOTE_ADDR'))
+
     letting = Letting.objects.get(id=letting_id)
     context = {
         'title': letting.title,
