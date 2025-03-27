@@ -1,0 +1,30 @@
+stages:
+  - test
+
+image: python:3.12
+
+variables:
+  DJANGO_SETTINGS_MODULE: oc_lettings_site.settings
+  PYTHONPATH: "$CI_PROJECT_DIR"
+
+before_script:
+  - pip install -r requirements.txt
+
+test:
+  stage: test
+  script:
+    - pytest --cov=letting --cov=profiles --cov=oc_lettings_site --cov-report=term-missing
+
+build_and_push:
+  stage: build
+  image: docker:20.10.16
+  services:
+    - docker:dind
+  variables:
+    DOCKER_DRIVER: overlay2
+  script:
+    - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+    - docker build -t $DOCKER_USERNAME/p13-docker:latest .
+    - docker push $DOCKER_USERNAME/p13-docker:latest
+  only:
+    - main
