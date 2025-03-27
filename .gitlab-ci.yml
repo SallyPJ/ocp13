@@ -27,4 +27,5 @@ build_and_push:
     - docker build -t $DOCKER_USERNAME/p13-docker:latest .
     - docker push $DOCKER_USERNAME/p13-docker:latest
   only:
+    - master
     - main
