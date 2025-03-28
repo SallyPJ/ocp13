@@ -14,6 +14,7 @@ test:
   image: python:3.12
   script:
     - pip install -r requirements.txt
+    - flake8 .
     - pytest --cov=letting --cov=profiles --cov=oc_lettings_site --cov-report=term-missing
 
 build_and_push:
@@ -26,6 +27,7 @@ build_and_push:
   script:
     - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
     - docker build -t $DOCKER_USERNAME/p13-docker:latest .
+    - docker tag $DOCKER_USERNAME/p13-docker:latest $DOCKER_USERNAME/p13-docker:$CI_COMMIT_SHORT_SHA
     - docker push $DOCKER_USERNAME/p13-docker:latest
   only:
     - master

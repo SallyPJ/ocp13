@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv("SECRET_KEY", default=get_random_secret_key())
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv("DEBUG_STATUS")
+DEBUG = os.getenv("DEBUG_STATUS", "False") == "True"
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'p13-docker.onrender.com']
 
