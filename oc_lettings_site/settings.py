@@ -137,38 +137,43 @@ LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-        },
-        'sentry': {
-            'level': 'ERROR',
-            'class': 'sentry_sdk.integrations.logging.EventHandler',
-        },
+        'console': {'class': 'logging.StreamHandler'},
     },
     'root': {
-        'handlers': ['console', 'sentry'],
+        'handlers': ['console'],
         'level': 'WARNING',
     },
     'loggers': {
         'django': {
-            'handlers': ['console', 'sentry'],
+            'handlers': ['console'],
             'level': 'INFO',
             'propagate': True,
         },
         'letting': {
-            'handlers': ['console', 'sentry'],
+            'handlers': ['console'],
             'level': 'INFO',
             'propagate': False,
         },
         'profiles': {
-            'handlers': ['console', 'sentry'],
+            'handlers': ['console'],
             'level': 'INFO',
             'propagate': False,
         },
         'oc_lettings_site': {
-            'handlers': ['console', 'sentry'],
+            'handlers': ['console'],
             'level': 'INFO',
             'propagate': False,
         },
     },
 }
+
+if os.getenv('BUILDING_DOCS') != 'True':
+    LOGGING['handlers']['sentry'] = {
+        'level': 'ERROR',
+        'class': 'sentry_sdk.integrations.logging.EventHandler',
+    }
+    LOGGING['root']['handlers'].append('sentry')
+    LOGGING['loggers']['django']['handlers'].append('sentry')
+    LOGGING['loggers']['letting']['handlers'].append('sentry')
+    LOGGING['loggers']['profiles']['handlers'].append('sentry')
+    LOGGING['loggers']['oc_lettings_site']['handlers'].append('sentry')
