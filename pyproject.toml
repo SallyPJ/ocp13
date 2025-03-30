@@ -10,3 +10,6 @@ authors = [
   { name="Sally PJ" }
 ]
 dependencies = []
+
+[tool.setuptools]
+packages = ["oc_lettings_site", "letting", "profiles"]
