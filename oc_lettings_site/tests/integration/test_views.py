@@ -1,6 +1,6 @@
+import pytest
 from django.urls import reverse
 
-# view, model, url
 
 def test_index_view(client):
     """
