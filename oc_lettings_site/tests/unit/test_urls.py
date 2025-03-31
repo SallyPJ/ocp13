@@ -3,6 +3,7 @@ from oc_lettings_site import views
 from letting.views import lettings_index
 from profiles.views import profiles_index
 
+
 def test_root_url_resolves_to_index():
     """
     Test that the root URL ('/') resolves to the correct view function.
@@ -12,6 +13,7 @@ def test_root_url_resolves_to_index():
     """
     assert resolve(reverse("index")).func == views.index
 
+
 def test_lettings_url_is_included():
     """
     Test that the lettings index URL resolves to the correct view function.
@@ -20,6 +22,7 @@ def test_lettings_url_is_included():
     to the 'lettings_index' view in the letting app.
     """
     assert resolve(reverse("letting:index")).func == lettings_index
+
 
 def test_profiles_url_is_included():
     """

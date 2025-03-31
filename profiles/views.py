@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.http import Http404
 from profiles.models import Profile
 import logging
 
@@ -31,7 +32,11 @@ def profile(request, username):
     Returns:
         HttpResponse: Rendered HTML response displaying the details of the specified user profile.
     """
-    logger.info("Consultation du profil : %s (IP: %s)", username, request.META.get('REMOTE_ADDR'))
-    profile = Profile.objects.get(user__username=username)
+    logger.info("Accessing profile for user: %s (IP: %s)", username, request.META.get('REMOTE_ADDR'))
+    try:
+        profile = Profile.objects.get(user__username=username)
+    except Profile.DoesNotExist:
+        logger.error("Profile not found for username '%s'", username)
+        raise Http404("Profile not found")
     context = {'profile': profile}
     return render(request, 'profiles/profile.html', context)

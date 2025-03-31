@@ -32,12 +32,10 @@ build_and_push:
     - docker push $DOCKER_USERNAME/p13-docker:latest
   only:
     - master
-    - main
 
 deploy_to_render:
   stage: deploy
   script:
     - curl -X POST "$RENDER_DEPLOY_HOOK"
   only:
-    - main
     - master

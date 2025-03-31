@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.http import Http404
 from .models import Letting
 import logging
 
@@ -31,9 +32,12 @@ def letting(request, letting_id):
     Returns:
         HttpResponse: Rendered HTML response displaying the details of the specified letting.
     """
-    logger.info("Consultation de la page Letting avec ID=%s (IP: %s)", letting_id, request.META.get('REMOTE_ADDR'))
-
-    letting = Letting.objects.get(id=letting_id)
+    logger.info("Letting page accessed(IP: %s)", letting_id, request.META.get('REMOTE_ADDR'))
+    try:
+        letting = Letting.objects.get(id=letting_id)
+    except Letting.DoesNotExist:
+        logger.error("Letting not found", letting_id)
+        raise Http404("Letting not found")
     context = {
         'title': letting.title,
         'address': letting.address,
