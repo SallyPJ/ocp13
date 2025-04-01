@@ -76,123 +76,98 @@ Utilisation de PowerShell, comme ci-dessus sauf :
 - Pour activer l'environnement virtuel, `.\venv\Scripts\Activate.ps1` 
 - Remplacer `which <my-command>` par `(Get-Command <my-command>).Path`
 
-## Déploiement
+## 📚 Documentation
+La documentation en anglais complète du projet se trouve ici :
+https://ocp13-sallypj.readthedocs.io/en/latest/
+## 🚀 Déploiement automatique
 
 ### 🧭 Vue d’ensemble
 
-Ce projet Django est conçu pour être déployé automatiquement via **Render** en utilisant **Docker** et une **pipeline CI/CD GitLab**.  
-Le déploiement est déclenché **à chaque `push` sur la branche principale** grâce au fichier `.gitlab-ci.yml`.
+Pour le déploiement, on utilise une **pipeline GitLab CI/CD** pour :
 
----
+1. ✅ **Exécuter automatiquement les tests** de l’application 
+2. 🐳 **Construire une image Docker** à partir du code du projet
+3. 🚀 **Publier cette image sur Docker Hub**
+4. 🌐 **Déployer automatiquement l'application sur Render** via un webhook
+
+Tout cela est déclenché à chaque `push` sur la branche `master`.
+
+
 ### 📋 Prérequis
 
-Avant de pouvoir déployer ce projet en production, assurez-vous de disposer des comptes et outils suivants :
+Avant le déploiement, vérifiez que vous disposez des comptes suivants :
 
-### 🧑‍💻 Comptes
-
-- ✅ Un compte **GitLab** : pour héberger le dépôt du projet et utiliser GitLab CI/CD  
-  👉 https://gitlab.com
-
-- ✅ Un compte **Render** : pour héberger l’application Django  
-  👉 https://render.com
-
-- ✅ Un compte **Docker Hub** : pour publier une image docker  
-  👉 https://hub.docker.com
-
-- ✅ Un compte **Sentry** : pour centraliser et suivre les erreurs sur l’application  
-  👉 https://sentry.io
+| Compte / Service | Usage | Lien |
+|------------------|-------|------|
+| 🦊 **GitLab** | Gestion du code source et CI/CD | [gitlab.com](https://gitlab.com) |
+| 🐳 **Docker Hub** | Stockage de l'image Docker | [hub.docker.com](https://hub.docker.com) |
+| 🚀 **Render** | Hébergement du service web Django | [render.com](https://render.com) |
+| 🐛 **Sentry** | Monitoring des erreurs | [sentry.io](https://sentry.io) |
 
 ---
 
-### ⚙️ Etapes de déploiement et Configuration requises
+### ⚙️ Étapes de déploiement et configuration
 
-#### Gitlab 
+#### 1. 🐳 Configuration Docker Hub
 
-##### Si nécessaire, Transférer le dépôt de GitHub vers Gitlab
- - Aller sur gitlab : https://gitlab.com/projects/new#import_project
- - Cliquer sur "Importer un projet depuis GitHub"
- - Connecter son compte GitHub si ce n’est pas encore fait 
- - Autoriser GitLab à accéder à tes dépôts GitHub 
- - Sélectionner le projet et l'importer
+Si l'image Docker n'existe pas encore :
 
-##### Paramétrer les variables d'environnement CI/CD
- Sur la page du dépôt gitlab :
- - Cliquer sur Settings > CI/CD > Variables
- - Appuyer sur Add Variables
-
-| **Variable**        | **Utilisation / Où la trouver**                                                                    |
-|---------------------|----------------------------------------------------------------------------------------------------|
-| `DEBUG_STATUS`      | True (Default)                                                                                     |
-| `DOCKER_USERNAME`   | Votre username docker (utilisé dans .gitlab-ci.yml)                                                |
-| `DOCKER_PASSWORD`   | Votre mot de passe docker (.gitlab-ci.yml)                                                         |
-| `RENDER_DEPLOY_HOOK` | Dans `.gitlab-ci.yml` → utilisé pour déclencher le déploiement Render (`curl $RENDER_DEPLOY_HOOK`) |
-| `SECRET_KEY`        | Dans `settings.py` → `SECRET_KEY = os.getenv("SECRET_KEY")`                                        |
-| `SENTRY_DSN`        | Dans `settings.py` → `SENTRY_DSN = os.getenv("SENTRY_DSN", "")`                                    |
-| `ALLOWED_HOSTS`     |                                                                                                    |
-
-Pour que le déploiement fonctionne correctement, les éléments suivants doivent être configurés :
-
-#### 🔐 Variables d’environnement
-
-Les variables **doivent être définies à la fois dans Render et dans GitLab CI/CD** (`Settings > CI/CD > Variables`) :
-
-| Variable       | Utilisation                         |
-|----------------|--------------------------------------|
-| `SECRET_KEY`   | Clé secrète Django                   |
-| `SENTRY_DSN`   | Clé DSN pour Sentry                  |
-| `DEBUG`        | ✅ Oui       | Doit être `False` en production      |
-| `ALLOWED_HOSTS` | ✅ Oui       | Domaine autorisé (ex. `monapp.onrender.com`) |
+- Connectez-vous sur [Docker Hub](https://hub.docker.com).
+- Cliquez sur **Create repository**.
+- Donnez-lui un nom (ex : `mon-projet-django`). Ce nom correspondra à `DOCKER_IMAGE_NAME`.
+- Définissez la visibilité sur **Public** et validez.
 
 ---
 
-### 🛠️ Étapes de déploiement
+#### 2. 🚀 Configuration Render
 
-#### ✅ 1. Créer un service web Render
+- Connectez-vous sur [dashboard.render.com](https://dashboard.render.com).
+- Cliquez sur **Add New > Web Service**.
+- Sélectionnez **Existing Image**.
+- Renseignez l'URL complète de votre image Docker :
 
-1. Aller sur [https://dashboard.render.com/](https://dashboard.render.com/)
-2. Cliquer sur **New > Web Service**
-3. Connecter votre dépôt GitLab
-4. Configurer le service comme suit :
+  ```
+  docker.io/{DOCKER_USERNAME}/{DOCKER_IMAGE_NAME}:latest
+  ```
 
-| Champ                  | Valeur                                            |
-|------------------------|---------------------------------------------------|
-| Runtime                | Python                                            |
-| Build Command          | `pip install -r requirements.txt`                |
-| Start Command          | `gunicorn oc_lettings_site.wsgi:application`     |
-| Environment            | Python 3.10+                                      |
-| Environment Variables  | Définir `SECRET_KEY`, `SENTRY_DSN`, `DEBUG=False` |
+- Définissez les variables d’environnement suivantes dans Render :
 
-> 💡 Si vous utilisez `collectstatic`, vérifiez que `STATIC_ROOT` et `WhiteNoise` sont bien configurés.
-
----
-
-#### ✅ 2. Configurer GitLab CI/CD
-
-Dans **GitLab**, allez dans `Settings > CI/CD > Variables` et ajoutez :
-
-- `SECRET_KEY`
-- `SENTRY_DSN`
-- *(Facultatif)* `DOCKER_HUB_USERNAME` et `DOCKER_HUB_TOKEN` si vous publiez une image Docker
-
-> À chaque `push` sur la branche `main`, GitLab :
-> - lance les tests,
-> - construit l’image Docker,
-> - déploie automatiquement sur Render.
+| Variable            | Valeur (à personnaliser)                                 |
+|---------------------|-----------------------------------------------------------|
+| `ALLOWED_HOSTS`     | `my-app.onrender.com` (remplacer par votre URL Render)   |
+| `DEBUG_STATUS`      | `False`                                                   |
+| `SECRET_KEY`        | Votre clé secrète Django                                 |
+| `SENTRY_DSN`        | URL DSN Sentry                                           |
+| `SENTRY_ENVIRONMENT`| `production`                                             |
 
 ---
 
-#### ✅ 3. Activer Sentry
+#### 3. 🦊 Configuration GitLab
 
-L’application est intégrée à Sentry via le code suivant dans `settings.py` :
+Si nécessaire, importez le dépôt depuis GitHub :
 
-```python
-import sentry_sdk
-from sentry_sdk.integrations.django import DjangoIntegration
-import os
+- Connectez-vous sur [GitLab](https://gitlab.com/projects/new#import_project).
+- Cliquez sur **Importer un projet depuis GitHub**.
+- Connectez votre compte GitHub si nécessaire.
+- Importez votre projet.
 
-sentry_sdk.init(
-    dsn=os.getenv("SENTRY_DSN", ""),
-    integrations=[DjangoIntegration()],
-    traces_sample_rate=1.0,
-    send_default_pii=True
-)
+##### 🔐 Variables d’environnement CI/CD
+
+Dans GitLab, allez sur : **Settings > CI/CD > Variables**, puis ajoutez ces variables :
+
+| Variable            | Valeur / Description                                  |
+|---------------------|--------------------------------------------------------|
+| `DOCKER_USERNAME`   | Votre identifiant Docker Hub                          |
+| `DOCKER_PASSWORD`   | Votre mot de passe Docker Hub                         |
+| `DOCKER_IMAGE_NAME` | Le nom de votre image Docker Hub                      |
+| `RENDER_DEPLOY_HOOK`| Webhook Render (à récupérer depuis Render)            |
+| `SECRET_KEY`        | Clé secrète Django                                    |
+| `SENTRY_DSN`        | DSN complet Sentry                                    |
+| `DEBUG_STATUS`      | `True` (valeur par défaut)                            |
+| `ALLOWED_HOSTS`     | `127.0.0.1,localhost` (valeur par défaut)             |
+| `SENTRY_ENVIRONMENT`| `development` (valeur par défaut)                     |
+
+---
+
+
+
