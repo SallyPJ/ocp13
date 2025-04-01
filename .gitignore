@@ -4,3 +4,4 @@ venv
 .env
 .coverage
 /staticfiles
+docs/build/
