@@ -14,8 +14,8 @@ To install and set up the OCP13 project locally, follow these steps:
 
     .. code-block:: bash
 
-    python3 -m venv venv # On Windows : python -m venv venv
-    source venv/bin/activate  # On Windows: venv\Scripts\activate
+        python3 -m venv venv # On Windows : python -m venv venv
+        source venv/bin/activate  # On Windows: venv\Scripts\activate
 
 3. **Install the dependencies:**
 
@@ -28,7 +28,7 @@ To install and set up the OCP13 project locally, follow these steps:
     Generate a random secret key using the following command and keep it:
 
     .. code-block:: bash
-    python -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())'
+        python -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())'
 
 5. **Get a sentry DSN**
     - Go to https://sentry.io
@@ -47,6 +47,8 @@ To install and set up the OCP13 project locally, follow these steps:
         DEBUG_STATUS=True
         SECRET_KEY=your_secret_key
         SENTRY_DSN=your_sentry_dsn
+        ALLOWED_HOSTS=localhost,127.0.0.1
+        SENTRY_ENVIRONMENT=development
 
 6. **Collect static files:**
 

@@ -18,11 +18,11 @@ Dans le reste de la documentation sur le développement local, il est supposé q
 #### Cloner le repository
 
 - `cd /path/to/put/project/in`
-- `git clone https://github.com/OpenClassrooms-Student-Center/Python-OC-Lettings-FR.git`
+- `git clone https://github.com/SallyPJ/ocp13.git`
 
 #### Créer l'environnement virtuel
 
-- `cd /path/to/Python-OC-Lettings-FR`
+- `cd /path/to/ocp13`
 - `python -m venv venv`
 - `apt-get install python3-venv` (Si l'étape précédente comporte des erreurs avec un paquet non trouvé sur Ubuntu)
 - Activer l'environnement `source venv/bin/activate`
@@ -34,7 +34,7 @@ Dans le reste de la documentation sur le développement local, il est supposé q
 
 #### Exécuter le site
 
-- `cd /path/to/Python-OC-Lettings-FR`
+- `cd /path/to/ocp13`
 - `source venv/bin/activate`
 - `pip install --requirement requirements.txt`
 - `python manage.py runserver`
@@ -43,25 +43,25 @@ Dans le reste de la documentation sur le développement local, il est supposé q
 
 #### Linting
 
-- `cd /path/to/Python-OC-Lettings-FR`
+- `cd /path/to/ocp13`
 - `source venv/bin/activate`
 - `flake8`
 
 #### Tests unitaires
 
-- `cd /path/to/Python-OC-Lettings-FR`
+- `cd /path/to/ocp13`
 - `source venv/bin/activate`
 - `pytest`
 
 #### Base de données
 
-- `cd /path/to/Python-OC-Lettings-FR`
+- `cd /path/to/ocp13`
 - Ouvrir une session shell `sqlite3`
 - Se connecter à la base de données `.open oc-lettings-site.sqlite3`
 - Afficher les tables dans la base de données `.tables`
-- Afficher les colonnes dans le tableau des profils, `pragma table_info(Python-OC-Lettings-FR_profile);`
+- Afficher les colonnes dans le tableau des profils, `pragma table_info(profiles_profile);`
 - Lancer une requête sur la table des profils, `select user_id, favorite_city from
-  Python-OC-Lettings-FR_profile where favorite_city like 'B%';`
+  profiles_profile where favorite_city like 'B%';`
 - `.quit` pour quitter
 
 #### Panel d'administration
@@ -178,12 +178,12 @@ docker build -t <DOCKER_USERNAME>/<DOCKER_IMAGE_NAME>:latest .
 
 #### 4. 🦊 Configuration GitLab
 
-Si nécessaire, importez le dépôt depuis GitHub :
+Si le projet n'est pas hébergé sur Gitlab, importez le dépôt depuis GitHub :
 
 - Connectez-vous sur [GitLab](https://gitlab.com/projects/new#import_project).
 - Cliquez sur **Importer un projet depuis GitHub**.
 - Connectez votre compte GitHub si nécessaire.
-- Importez votre projet.
+- Importez le projet.
 
 ##### 🔐 Variables d’environnement CI/CD
 
@@ -197,14 +197,32 @@ Dans GitLab, allez sur : **Settings > CI/CD > Variables**, puis ajoutez ces vari
 | `RENDER_DEPLOY_HOOK`| Webhook Render (à récupérer depuis Render)            |
 | `SECRET_KEY`        | Clé secrète Django                                    |
 | `SENTRY_DSN`        | DSN complet Sentry                                    |
-| `DEBUG_STATUS`      | `True` (valeur par défaut)                            |
-| `ALLOWED_HOSTS`     | `127.0.0.1,localhost` (valeur par défaut)             |
-| `SENTRY_ENVIRONMENT`| `development` (valeur par défaut)                     |
+| `DEBUG_STATUS`      | `True`                             |
+| `ALLOWED_HOSTS`     | `127.0.0.1,localhost`              |
+| `SENTRY_ENVIRONMENT`| `development`                     |
+
+##### Associer le dépôt local au dépôt distant Gitlab et pusher pour activer la pipeline
+- Associer si nécessaire le repo git local au repo gitlab distant  
+```bash
+  git remote add origin https://gitlab.com/<username>/<nom-du-projet>.git
+```
+- Effectuer un commit de test
+```bash
+  git commit --allow-empty -m "Test"
+```
+- Pusher le commit sur la branche master du repo Gitlab
+```bash
+  git push gitlab master 
+```
+Une fois le déploiement en succès sur render, ouvrir l'application :
+```bash
+  https://<nom-de-ton-service>.onrender.com
+```
 
 ## 📚 Documentation
 La documentation en anglais complète du projet se trouve ici :
 https://ocp13-sallypj.readthedocs.io/en/latest/
----
+
 
 
 
