@@ -8,10 +8,11 @@ if os.getenv('BUILDING_DOCS') != 'True':
     import sentry_sdk
     from sentry_sdk.integrations.django import DjangoIntegration
     sentry_sdk.init(
-        dsn=os.getenv("SENTRY_DSN"),  # remplace par ton DSN réel
+        dsn=os.getenv("SENTRY_DSN"),
         integrations=[DjangoIntegration()],
-        traces_sample_rate=1.0,  # pour le monitoring de performances (tu peux baisser en prod)
-        send_default_pii=True    # pour envoyer des infos d'utilisateur connecté (si besoin)
+        traces_sample_rate=1.0,  # pour le monitoring de performances
+        send_default_pii=True,   # pour envoyer des infos d'utilisateur connecté
+        environment=os.getenv("SENTRY_ENVIRONMENT", "development")  # pour distinguer les environnements
     )
 
 load_dotenv()

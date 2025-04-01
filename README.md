@@ -120,14 +120,15 @@ Avant de pouvoir déployer ce projet en production, assurez-vous de disposer des
  - Cliquer sur Settings > CI/CD > Variables
  - Appuyer sur Add Variables
 
-| **Variable**         | **Utilisation / Où la trouver**                                                                    |
-|----------------------|----------------------------------------------------------------------------------------------------|
-| `DEBUG_STATUS`       | Dans .env                                                                                          |
-| `DOCKER_USERNAME`    | Dans `.gitlab-ci.yml` → utilisé pour `docker login` (push vers Docker Hub)                         |
-| `DOCKER_PASSWORD`    | Dans `.gitlab-ci.yml` → utilisé avec `DOCKER_USERNAME` pour authentification Docker Hub            |
+| **Variable**        | **Utilisation / Où la trouver**                                                                    |
+|---------------------|----------------------------------------------------------------------------------------------------|
+| `DEBUG_STATUS`      | True (Default)                                                                                     |
+| `DOCKER_USERNAME`   | Votre username docker (utilisé dans .gitlab-ci.yml)                                                |
+| `DOCKER_PASSWORD`   | Votre mot de passe docker (.gitlab-ci.yml)                                                         |
 | `RENDER_DEPLOY_HOOK` | Dans `.gitlab-ci.yml` → utilisé pour déclencher le déploiement Render (`curl $RENDER_DEPLOY_HOOK`) |
-| `SECRET_KEY`         | Dans `settings.py` → `SECRET_KEY = os.getenv("SECRET_KEY")`                                        |
-| `SENTRY_DSN`         | Dans `settings.py` → `SENTRY_DSN = os.getenv("SENTRY_DSN", "")`                                    |
+| `SECRET_KEY`        | Dans `settings.py` → `SECRET_KEY = os.getenv("SECRET_KEY")`                                        |
+| `SENTRY_DSN`        | Dans `settings.py` → `SENTRY_DSN = os.getenv("SENTRY_DSN", "")`                                    |
+| `ALLOWED_HOSTS`     |                                                                                                    |
 
 Pour que le déploiement fonctionne correctement, les éléments suivants doivent être configurés :
 
