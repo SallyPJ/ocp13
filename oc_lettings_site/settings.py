@@ -1,8 +1,9 @@
 from pathlib import Path
 from django.core.management.utils import get_random_secret_key
 from dotenv import load_dotenv
-
 import os
+
+load_dotenv()
 
 if os.getenv('BUILDING_DOCS') != 'True':
     import sentry_sdk
@@ -12,10 +13,11 @@ if os.getenv('BUILDING_DOCS') != 'True':
         integrations=[DjangoIntegration()],
         traces_sample_rate=1.0,  # pour le monitoring de performances
         send_default_pii=True,   # pour envoyer des infos d'utilisateur connecté
-        environment=os.getenv("SENTRY_ENVIRONMENT", "development")  # pour distinguer les environnements
+        environment=os.getenv("SENTRY_ENVIRONMENT", "development"),
     )
+    sentry_sdk.set_tag("environment", os.getenv("SENTRY_ENVIRONMENT", "development"))
 
-load_dotenv()
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -29,6 +31,7 @@ SECRET_KEY = os.getenv("SECRET_KEY", default=get_random_secret_key())
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG_STATUS", "False") == "True"
+print("DEBUG STATUS:", DEBUG)
 
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
 
@@ -142,7 +145,7 @@ LOGGING = {
     },
     'root': {
         'handlers': ['console'],
-        'level': 'WARNING',
+        'level': 'INFO',
     },
     'loggers': {
         'django': {
@@ -170,7 +173,7 @@ LOGGING = {
 
 if os.getenv('BUILDING_DOCS') != 'True':
     LOGGING['handlers']['sentry'] = {
-        'level': 'ERROR',
+        'level': 'INFO',
         'class': 'sentry_sdk.integrations.logging.EventHandler',
     }
     LOGGING['root']['handlers'].append('sentry')
