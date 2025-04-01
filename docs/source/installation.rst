@@ -28,6 +28,7 @@ To install and set up the OCP13 project locally, follow these steps:
     Generate a random secret key using the following command and keep it:
 
     .. code-block:: bash
+
         python -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())'
 
 5. **Get a sentry DSN**
@@ -61,6 +62,7 @@ To install and set up the OCP13 project locally, follow these steps:
     Now you can start the server by running:
 
     .. code-block:: bash
+
         python manage.py runserver
 
     Then, open your browser and go to  http://localhost:8000
