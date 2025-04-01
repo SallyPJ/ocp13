@@ -29,7 +29,7 @@ SECRET_KEY = os.getenv("SECRET_KEY", default=get_random_secret_key())
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG_STATUS", "False") == "True"
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'p13-docker.onrender.com']
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
 
 
 # Application definition

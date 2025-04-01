@@ -2,3 +2,4 @@ sphinx
 django==3.0
 python-dotenv
 sphinx_rtd_theme
+sphinx-autodoc-typehints

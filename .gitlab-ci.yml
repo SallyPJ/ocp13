@@ -19,6 +19,7 @@ test:
     - pytest --cov=letting --cov=profiles --cov=oc_lettings_site --cov-report=term-missing
 
 build_and_push:
+  needs: [test]
   stage: build
   image: docker:20.10.16
   services:
@@ -38,6 +39,7 @@ build_and_push:
     - master
 
 deploy_to_render:
+  needs: [build_and_push]
   stage: deploy
   script:
     - curl -X POST "$RENDER_DEPLOY_HOOK"

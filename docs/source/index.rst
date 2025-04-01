@@ -10,9 +10,26 @@ Welcome to OCP13 Site documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   introduction
+   project_overview
    installation
-   usage
-   architecture
+   quickstart
+   technologies
+   models_and_schema
+   api_views
+   user_guide
    deployment
+
+
+
+.. include:: project_overview.rst
+.. include:: installation.rst
+.. include:: quickstart.rst
+.. include:: technologies.rst
+.. include:: models_and_schema.rst
+.. include:: api_views.rst
+.. include:: user_guide.rst
+.. include:: deployment.rst
+
+
+
 
