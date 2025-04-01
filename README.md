@@ -76,9 +76,6 @@ Utilisation de PowerShell, comme ci-dessus sauf :
 - Pour activer l'environnement virtuel, `.\venv\Scripts\Activate.ps1` 
 - Remplacer `which <my-command>` par `(Get-Command <my-command>).Path`
 
-## 📚 Documentation
-La documentation en anglais complète du projet se trouve ici :
-https://ocp13-sallypj.readthedocs.io/en/latest/
 ## 🚀 Déploiement automatique
 
 ### 🧭 Vue d’ensemble
@@ -104,22 +101,60 @@ Avant le déploiement, vérifiez que vous disposez des comptes suivants :
 | 🚀 **Render** | Hébergement du service web Django | [render.com](https://render.com) |
 | 🐛 **Sentry** | Monitoring des erreurs | [sentry.io](https://sentry.io) |
 
----
+
 
 ### ⚙️ Étapes de déploiement et configuration
 
-#### 1. 🐳 Configuration Docker Hub
+#### 1. 📘 Configuration Sentry (journalisation des erreurs)
 
-Si l'image Docker n'existe pas encore :
+Sentry est utilisé pour suivre les erreurs et exceptions dans l’application. Il doit être configuré **avant** le déploiement.
 
-- Connectez-vous sur [Docker Hub](https://hub.docker.com).
-- Cliquez sur **Create repository**.
-- Donnez-lui un nom (ex : `mon-projet-django`). Ce nom correspondra à `DOCKER_IMAGE_NAME`.
-- Définissez la visibilité sur **Public** et validez.
+- Créez un compte (ou connectez-vous) sur [sentry.io](https://sentry.io)
+- Créez un nouveau projet Sentry de type **Django**
+- Récupérez le **DSN** dans la page de configuration du projet
+- Conservez-le **en tant que variable d’environnement** (`SENTRY_DSN`).
 
----
+#### 2. 🐳 Configuration Docker Hub
 
-#### 2. 🚀 Configuration Render
+Ce projet utilise une image Docker personnalisée hébergée sur Docker Hub.  
+Voici les étapes pour créer cette image et la rendre disponible pour Render ou toute autre plateforme de déploiement.
+
+
+#####  Installer Docker
+
+Avant tout, assurez-vous que Docker est installé sur votre machine.  
+🔗 [Télécharger Docker](https://docs.docker.com/get-started/get-docker/)
+
+
+#####  Créer un dépôt sur Docker Hub
+
+- Connectez-vous sur [Docker Hub](https://hub.docker.com)
+- Cliquez sur **"Create Repository"**
+- Donnez un nom à votre dépôt, par exemple : `mon-projet-django`  
+  👉 Ce nom sera utilisé dans la variable `DOCKER_IMAGE_NAME`
+- Définissez la visibilité sur **Public** 
+- Cliquez sur **Create**
+
+
+
+##### Construire l’image Docker localement
+
+Depuis la **racine de votre projet** (là où se trouve le fichier `Dockerfile`), exécutez la commande suivante :
+
+```bash
+docker build -t <DOCKER_USERNAME>/<DOCKER_IMAGE_NAME>:latest .
+```
+##### Se connecter à docker et pusher l'image 
+- Connectez vous à docker :
+```bash
+ docker login
+ ```
+- Publiez l'image sur dockerhub :
+```bash
+  docker push <DOCKER_USERNAME>/<DOCKER_IMAGE_NAME>:latest
+```
+
+#### 3. 🚀 Configuration Render
 
 - Connectez-vous sur [dashboard.render.com](https://dashboard.render.com).
 - Cliquez sur **Add New > Web Service**.
@@ -140,9 +175,8 @@ Si l'image Docker n'existe pas encore :
 | `SENTRY_DSN`        | URL DSN Sentry                                           |
 | `SENTRY_ENVIRONMENT`| `production`                                             |
 
----
 
-#### 3. 🦊 Configuration GitLab
+#### 4. 🦊 Configuration GitLab
 
 Si nécessaire, importez le dépôt depuis GitHub :
 
@@ -167,6 +201,9 @@ Dans GitLab, allez sur : **Settings > CI/CD > Variables**, puis ajoutez ces vari
 | `ALLOWED_HOSTS`     | `127.0.0.1,localhost` (valeur par défaut)             |
 | `SENTRY_ENVIRONMENT`| `development` (valeur par défaut)                     |
 
+## 📚 Documentation
+La documentation en anglais complète du projet se trouve ici :
+https://ocp13-sallypj.readthedocs.io/en/latest/
 ---
 
 
