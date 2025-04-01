@@ -5,10 +5,12 @@
 
 import os
 import sys
+import django
+
 sys.path.insert(0, os.path.abspath('../..'))
 os.environ['DJANGO_SETTINGS_MODULE'] = 'oc_lettings_site.settings'
 
-import django
+
 django.setup()
 
 # -- Project information -----------------------------------------------------
@@ -30,7 +32,6 @@ extensions = [
 
 templates_path = ['_templates']
 exclude_patterns = ['**/migrations/*', '_build', 'Thumbs.db', '.DS_Store']
-
 
 
 # -- Options for HTML output -------------------------------------------------

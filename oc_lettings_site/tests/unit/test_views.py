@@ -1,4 +1,5 @@
-import pytest
+from pytest import raises
+
 
 def test_custom_500():
     """
@@ -7,5 +8,5 @@ def test_custom_500():
     Returns:
         None
     """
-    with pytest.raises(ValueError, match="Test error for 500 page"):
+    with raises(ValueError, match="Test error for 500 page"):
         raise ValueError("Test error for 500 page")

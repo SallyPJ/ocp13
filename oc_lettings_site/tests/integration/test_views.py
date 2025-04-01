@@ -1,4 +1,3 @@
-import pytest
 from django.urls import reverse
 
 
@@ -30,8 +29,3 @@ def test_custom_404(client):
     response = client.get("/non-existent-page/")
     assert response.status_code == 404
     assert "Page Not Found" in response.content.decode()
-
-
-
-
-

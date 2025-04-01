@@ -2,6 +2,7 @@ from invoke import task
 import subprocess
 import json
 
+
 @task
 def run_local_docker(c):
     """

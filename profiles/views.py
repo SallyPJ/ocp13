@@ -32,7 +32,8 @@ def profile(request, username):
     Returns:
         HttpResponse: Rendered HTML response displaying the details of the specified user profile.
     """
-    logger.info("Accessing profile for user: %s (IP: %s)", username, request.META.get('REMOTE_ADDR'))
+    logger.info("Accessing profile for user: %s (IP: %s)",
+                username, request.META.get('REMOTE_ADDR'))
     try:
         profile = Profile.objects.get(user__username=username)
     except Profile.DoesNotExist:

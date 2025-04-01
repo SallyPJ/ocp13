@@ -18,6 +18,7 @@ def index(request):
 
     return render(request, 'oc_lettings_site/index.html')
 
+
 def custom_404(request, exception):
     """
     Handle 404 errors (Page Not Found) by rendering a custom error page.
@@ -32,6 +33,7 @@ def custom_404(request, exception):
     logger.warning("404 - Page not found : %s", request.path)
     return render(request, 'oc_lettings_site/404.html', status=404)
 
+
 def custom_500(request):
     """
     Handle 500 errors (Internal Server Error) by rendering a custom error page.
@@ -45,6 +47,7 @@ def custom_500(request):
     logger.critical("500 - Internal server error occurred while processing %s", request.path)
     return render(request, 'oc_lettings_site/500.html', status=500)
 
+
 def test_error(request):
     logger.error("Déclenchement volontaire d'une erreur pour test Sentry")
-    division_by_zero = 1 / 0
+    _ = 1 / 0
