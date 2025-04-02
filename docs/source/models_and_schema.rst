@@ -30,7 +30,8 @@ Database schema diagram
 --------------------------------
 The following diagram illustrates the relationships between the models:
 
-.. image:: _static/db_schema.png
+.. image:: _static/images/db_schema.png
    :alt: Database Schema Diagram
+   :class: padded
    :align: center
    :width: 80%
