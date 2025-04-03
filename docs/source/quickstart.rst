@@ -4,21 +4,13 @@ Quickstart
 You can run the project in two ways:
 
 1. Locally (recommended for development)
-2. From a Docker image (recommended for testing )
+2. From a Docker image
 
+Shared Configuration (Local & Docker)
+----------------------------------------
 
-Local setup
--------------
+Before running the project in any environment (local or Docker), make sure to configure the following environment variables.
 
-Prerequisites
-~~~~~~~~~~~~~~~~~~~~~~~~
-
-- the project is installed (See "Installation")
-- Python ≥ 3.8 is available
-- Virtual environment is activated
-
-Steps to run the project locally
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 1. **Generate a SECRET_KEY:**
 
     Generate a random secret key using the following command and keep it:
@@ -47,6 +39,20 @@ Steps to run the project locally
         ALLOWED_HOSTS=localhost,127.0.0.1
         SENTRY_ENVIRONMENT=development
 
+Local setup
+-------------
+
+Prerequisites
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+- the project is installed (See "Installation")
+- Python ≥ 3.8 is available
+- Virtual environment is activated
+
+
+Steps to run the project locally
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 4. **Collect static files:**
 
     .. code-block:: bash
@@ -69,26 +75,18 @@ Docker setup
 
 Prerequisites
 ~~~~~~~~~~~~~~~~~~~~~~~~
-- Connected to Docker Hub
-- Docker installed and running on your machine
 
+- Docker installed and running on your machine
 
 Steps to run the project
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Build and run the Docker container:
+Build and run locally the Docker container:
 
     .. code-block:: bash
 
-        docker pull sallypj/p13-docker:latest
-        docker run -p 8000:8000 sallypj/p13-docker:latest
+        docker build -t your_project_name:tag .
+        docker run --env-file .env -p 8000:8000 your_project_name:tag
 
 The site should now be available at http://localhost:8000/
 
-Or run everything with a single command using Invoke:
-
-    .. code-block:: bash
-
-        invoke run-local-docker
-
-This command pulls the latest image, runs the container, and shows the commit hash.
