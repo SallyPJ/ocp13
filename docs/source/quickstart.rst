@@ -90,3 +90,24 @@ Build and run locally the Docker container:
 
 The site should now be available at http://localhost:8000/
 
+Quality checks
+--------------
+
+
+1. **Run tests:**
+
+    .. code-block:: bash
+
+        pytest
+
+2. **Check tests coverage:**
+
+    .. code-block:: bash
+
+        pytest --cov=letting --cov=profiles --cov=oc_lettings_site --cov-report=term-missing
+
+
+3. **Check code formatting:**
+    .. code-block:: bash
+
+        flake8
