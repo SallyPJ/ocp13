@@ -175,7 +175,7 @@ LOGGING = {
 
 if os.getenv('BUILDING_DOCS') != 'True':
     LOGGING['handlers']['sentry'] = {
-        'level': 'INFO',
+        'level': 'WARNING',
         'class': 'sentry_sdk.integrations.logging.EventHandler',
     }
     LOGGING['root']['handlers'].append('sentry')

@@ -195,11 +195,8 @@ Dans GitLab, allez sur : **Settings > CI/CD > Variables**, puis ajoutez ces vari
 | `DOCKER_PASSWORD`   | Votre mot de passe Docker Hub                         |
 | `DOCKER_IMAGE_NAME` | Le nom de votre image Docker Hub                      |
 | `RENDER_DEPLOY_HOOK`| Webhook Render (à récupérer depuis Render)            |
-| `SECRET_KEY`        | Clé secrète Django                                    |
-| `SENTRY_DSN`        | DSN complet Sentry                                    |
-| `DEBUG_STATUS`      | `True`                             |
+| `SECRET_KEY`        | Clé secrète Django                                    | 
 | `ALLOWED_HOSTS`     | `127.0.0.1,localhost`              |
-| `SENTRY_ENVIRONMENT`| `development`                     |
 
 ##### Associer le dépôt local au dépôt distant Gitlab et pusher pour activer la pipeline
 - Associer si nécessaire le repo git local au repo gitlab distant  

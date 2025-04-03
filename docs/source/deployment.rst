@@ -130,10 +130,7 @@ In GitLab → **Settings > CI/CD > Variables**, add:
 - `DOCKER_IMAGE_NAME`: Name of your Docker image (e.g. `my-django-project`)
 - `RENDER_DEPLOY_HOOK`: Webhook URL provided by Render to trigger deployment
 - `SECRET_KEY`: Your Django secret key (keep it safe!)
-- `SENTRY_DSN`: Your full Sentry DSN (used for error logging)
-- `DEBUG_STATUS`: `True` (default for local development)
 - `ALLOWED_HOSTS`: `127.0.0.1,localhost` (allowed domains for Django to run)
-- `SENTRY_ENVIRONMENT`: `development` (use `production` on deployed app)
 
 5. 🔁 Link and Push to GitLab
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

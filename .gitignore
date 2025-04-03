@@ -5,3 +5,4 @@ venv
 .coverage
 /staticfiles
 docs/build/
+.idea/
