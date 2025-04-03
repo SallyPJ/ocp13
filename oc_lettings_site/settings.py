@@ -8,14 +8,17 @@ load_dotenv()
 if os.getenv('BUILDING_DOCS') != 'True':
     import sentry_sdk
     from sentry_sdk.integrations.django import DjangoIntegration
-    sentry_sdk.init(
-        dsn=os.getenv("SENTRY_DSN"),
-        integrations=[DjangoIntegration()],
-        traces_sample_rate=1.0,  # pour le monitoring de performances
-        send_default_pii=True,   # pour envoyer des infos d'utilisateur connecté
-        environment=os.getenv("SENTRY_ENVIRONMENT", "development"),
-    )
-    sentry_sdk.set_tag("environment", os.getenv("SENTRY_ENVIRONMENT", "development"))
+
+    sentry_dsn = os.getenv("SENTRY_DSN")
+    if sentry_dsn:
+        sentry_sdk.init(
+            dsn=sentry_dsn,
+            integrations=[DjangoIntegration()],
+            traces_sample_rate=1.0,  # pour le monitoring de performances
+            send_default_pii=True,   # pour envoyer des infos d'utilisateur connecté
+            environment=os.getenv("SENTRY_ENVIRONMENT", "development"),
+        )
+        sentry_sdk.set_tag("environment", os.getenv("SENTRY_ENVIRONMENT", "development"))
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
