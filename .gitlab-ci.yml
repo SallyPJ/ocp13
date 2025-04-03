@@ -16,7 +16,7 @@ test:
     - pip install -r requirements.txt
     - python manage.py collectstatic --noinput
     - flake8 . # || echo "Flake8 non bloquant"
-    - pytest --cov=letting --cov=profiles --cov=oc_lettings_site --cov-report=term-missing
+    - pytest --cov=letting --cov=profiles --cov=oc_lettings_site --cov-report=term-missing --cov-fail-under=80
 
 build_and_push:
   needs: [test]
